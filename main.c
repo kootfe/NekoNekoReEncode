@@ -36,7 +36,6 @@ int main()
 
     lf_init_glfw(appM.width, appM.height, win);
     init_theme();
-    init_font();
     lf_set_theme(theme_set());
 
 
@@ -52,8 +51,7 @@ int main()
         glfwSwapBuffers(win);
     }
 
-    lf_free_font(titlefont);
-    free(titlefont);
+    freefonts();
     lf_terminate();
     glfwDestroyWindow(win);
     glfwTerminate();

@@ -2,7 +2,6 @@
 #include <leif/leif.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "headers/conf.h"
 #include "headers/gui.h"
 #include "headers/theme.h"
 #include "headers/app.h"
@@ -52,6 +51,7 @@ void render_top(App *app)
 
 void render_menu(App *app)
 {
+    lf_push_font(btnfont);
     const char* types[] = {"Anime", "Video", "Custom"};
     for (uint32_t i = 0; i < 3; ++i) {
         app->parset == (Parset)i ? lf_push_style_props(btn_gray_active) : lf_push_style_props(btn_gray_inactive);
@@ -61,8 +61,7 @@ void render_menu(App *app)
 
         lf_pop_style_props();
     }
-    btn_gray_inactive.margin_top = 0.0f;
-    btn_gray_inactive.margin_right = 0.0f;
+    lf_pop_font();
 }
 
 void work_leif(App *app)

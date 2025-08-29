@@ -7,6 +7,9 @@ extern LfUIElementProps cyan_button;
 extern LfUIElementProps btn_gray_inactive;
 extern LfUIElementProps btn_gray_active;
 
+extern LfFont *titlefont;
+extern LfFont *btnfont;
+
 void init_theme();
 
 #endif

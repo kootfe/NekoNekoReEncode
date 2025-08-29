@@ -7,4 +7,3 @@ App appM = {
     .height = 720,
     .parset = ANIME
 };
-LfFont *titlefont = NULL;

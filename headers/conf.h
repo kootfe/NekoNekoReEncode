@@ -5,6 +5,5 @@
 #include "app.h"
 
 extern App appM;
-extern LfFont *titlefont; 
                          
 #endif

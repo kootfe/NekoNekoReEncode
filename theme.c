@@ -1,10 +1,14 @@
 #include <leif/leif.h>
 #include "headers/theme.h"
+#include "headers/fonts.h"
 
 // Define the globals
 LfUIElementProps cyan_button;
 LfUIElementProps btn_gray_inactive;
 LfUIElementProps btn_gray_active;
+
+LfFont *titlefont;
+LfFont *btnfont;
 
 void init_theme()
 {
@@ -32,5 +36,8 @@ void init_theme()
     btn_gray_active.border_width = 0;
     btn_gray_active.text_color = LF_WHITE;
     btn_gray_active.corner_radius = 4.0f;
+
+    init_font(&titlefont, JET_BOLD, 30);
+    init_font(&btnfont, JET_MONO, 20);
 }
 
