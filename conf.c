@@ -7,3 +7,5 @@ App appM = {
     .height = 720,
     .parset = ANIME
 };
+
+RenderSetting rSet;

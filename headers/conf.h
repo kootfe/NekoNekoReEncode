@@ -12,10 +12,12 @@ typedef enum EncoderE {
 } EncoderE;
 
 typedef struct RenderSetting {
+    Parset parset;
     EncoderE encoder;
     int vbitrate;
     int audiobitrate;
     int cfr;
 } RenderSetting;
                         
+extern RenderSetting rSet;
 #endif
