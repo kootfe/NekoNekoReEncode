@@ -1,10 +1,12 @@
 #include <cglm/ease.h>
 #include <leif/leif.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include "headers/gui.h"
 #include "headers/theme.h"
 #include "headers/app.h"
+#include "headers/cli.h"
+#include "headers/utils.h"
 
 #define MARGIN 10.0f
 //this is general margin btw... not some special its magic number lol.
@@ -16,7 +18,9 @@
 
 void render_btn_clicked(App *app)
 {
-    printf("Current Parset: %s\n", app->parset < 2 ? (app->parset == 1 ? "Video" : "Anime") : "Custom");
+    const char *lnx = "echo test";
+    execute_cmd(lnx, NULL);
+    
 }
 
 vec2s v2s(float x, float y)
@@ -64,11 +68,35 @@ void render_menu(App *app)
     lf_pop_font();
 }
 
+void render_settings(App *app)
+{
+    char parset[20] = "";
+    switch (app->parset) {
+        case ANIME: stack_strcpy(parset, sizeof(parset), "Anime"); break;
+        case VIDEO: stack_strcpy(parset, sizeof(parset), "Video"); break;
+        case CUSTOM: stack_strcpy(parset, sizeof(parset), "Custom"); break;
+    }
+    lf_text(parset);
+}
+
+void encoderSelector(App *app)
+{
+    static const char *encoder[] = { "libx265(recomended)", "libx264"};
+    static bool open = false;
+    static int val = 0;
+    lf_push_style_props(dropdownStyle);
+    lf_dropdown_menu(encoder, "Encoder", 2, 100, 80, &val, &open);
+    lf_pop_style_props();
+}
 void work_leif(App *app)
 {
     lf_div_begin(v2s(MARGIN, MARGIN),v2s(app->width - MARGIN * 2.0f, app->height - MARGIN * 2.0f), 1);
     render_top(app);
     lf_next_line();
     render_menu(app);
+    lf_next_line();
+    render_settings(app);
+
+    encoderSelector(app);
     lf_div_end();
 }

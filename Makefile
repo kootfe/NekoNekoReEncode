@@ -12,6 +12,7 @@ all: $(TARGET)
 # Link all object files to create the target
 $(TARGET): $(OBK)
 	$(CC) -o $@ $^ $(LDFLAGS)
+	./app
 
 # Compile .c files into .o files
 %.o: %.c
