@@ -9,6 +9,7 @@
 #include "headers/gui.h"
 #include "headers/theme.h"
 #include "headers/fonts.h"
+#include "headers/input.h"
 
 void check(void *ptr)
 {
@@ -36,6 +37,7 @@ int main()
 
     lf_init_glfw(appM.width, appM.height, win);
     init_theme();
+    load_inputs();
     lf_set_theme(theme_set());
 
 

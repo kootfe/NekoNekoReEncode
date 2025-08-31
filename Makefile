@@ -2,7 +2,7 @@ SRC = $(wildcard *.c)
 OBK = $(SRC:.c=.o)
 TARGET = app
 CC = gcc
-LIBS = glfw3 leif libclipboard cglm xcb gl
+LIBS = glfw3 leif libclipboard cglm xcb gl tinyfiledialogs 
 
 CFLAGS = -Wall -Wextra $(shell pkg-config --cflags $(LIBS))
 LDFLAGS = $(shell pkg-config --libs $(LIBS))

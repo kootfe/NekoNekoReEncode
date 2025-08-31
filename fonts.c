@@ -5,7 +5,7 @@
 #include <string.h>
 #include "fonts/jetbold.h"
 #include "fonts/jetmono.h"
-#include "headers/conf.h"
+#include "fonts/spacemono.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -66,6 +66,13 @@ char *dftt(FontList font)
             fwrite(jetmonofont, 1, jetmonofontlen, f); // <- use correct font
             fclose(f);
             return path;
+        case SPACE_MONO:
+            snprintf(path, PATH_MAX_LEN, "/tmp/spacemono_nekoneko.ttf");
+            f = fopen(path, "wb");
+            if (!f) return NULL;
+            fwrite(spacemono_d, 1, spacemono_d_len, f);
+            fclose(f);
+            return path;
         default:
             return NULL;
     }
@@ -74,7 +81,8 @@ char *dftt(FontList font)
     if (ret == 0 || ret >= PATH_MAX_LEN)
         return NULL;
 
-    const char *filename = (font == JET_BOLD) ? "jetbold_nekoneko.ttf" : "jetmono_nekoneko.ttf";
+    const char *filename = (font == JET_BOLD) ? "jetbold_nekoneko.ttf" : (font == SPACE_MONO) ? "spacemono_nekoneko.ttf" : "jetmono_nekoneko.ttf";
+    
 
     if (path[ret - 1] != '\\' && path[ret - 1] != '/')
         strncat(path, "\\", PATH_MAX_LEN - strlen(path) - 1);
@@ -85,6 +93,8 @@ char *dftt(FontList font)
 
     if (font == JET_BOLD)
         fwrite(JetBrainsMonoExtraBold_ttf, 1, JetBrainsMonoExtraBold_ttf_len, f);
+    else if (font == SPACE_MONO)
+        fwrite(spacemono_d,1,spacemono_d_len,f);
     else
         fwrite(jetmonofont, 1, jetmonofontlen, f); // <- correct font
 

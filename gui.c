@@ -7,7 +7,9 @@
 #include "headers/conf.h"
 #include "headers/theme.h"
 #include "headers/app.h"
+#include "headers/input.h"
 #include "headers/utils.h"
+#include <tinyfiledialogs.h>
 
 #define MARGIN 10.0f
 //this is general margin btw... not some special its magic number lol.
@@ -19,7 +21,7 @@
 
 void render_btn_clicked(App *app)
 {
-    printf("Encoder(INT): %d\nCFR: %d\nParset(INT)%d\n", rSet.encoder, rSet.cfr, rSet.parset);
+    printf("Encoder(INT): %d\nCFR: %d\nParset(INT)%d\nSpeed(INT): %d\n", rSet.encoder, rSet.cfr, rSet.parset, rSet.speed);
 }
 
 vec2s v2s(float x, float y)
@@ -85,7 +87,7 @@ void encoderSelector(App *app)
     static bool open = false;
     static int val = 0;
     lf_push_style_props(dropdownStyle);
-    lf_dropdown_menu(encoder, "Encoder", 2, 215, 80, &val, &open);
+    lf_dropdown_menu(encoder, "Encoder", 2, 215, 60, &val, &open);
     lf_pop_style_props();
     rSet.encoder = (EncoderE)val;
 }
@@ -104,6 +106,50 @@ void cfrSelector(App *app)
     rSet.cfr = val;
 }
 
+void speedSelector(App *app)
+{
+    static int val = 0;
+    static const char *speed[] = {
+        "Very Fast", "Faster", "Fast",
+        "Normal",
+        "Slow", "Slower", "Very Slow",
+        "Placebo"
+    };
+    static bool op = 0;
+    lf_push_style_props(dropdownStyle);
+    lf_dropdown_menu(speed, "Speed", 8, 215, 200, &val, &op);
+    lf_pop_style_props();
+    rSet.speed = (SpeedE)val;
+}
+
+void render_file_selc(App *app)
+{
+    lf_input_text(&pathInput);
+    const char *filters[2] = { "*.mp4", "*.mkv" };
+    
+    if (lf_button("Pick") == LF_CLICKED) {
+        const char *default_dir = "/"; // Linux default
+#if defined(_WIN32) || defined(_WIN64)
+        default_dir = "C:\\";        // Windows default
+#endif
+
+        const char *path = tinyfd_openFileDialog(
+            "Select file", 
+            default_dir, 
+            2, 
+            filters, 
+            NULL, 
+            0
+        );
+
+        if (path) { 
+            snprintf(pathBuf, sizeof(pathBuf), "%s", path);
+        } else {
+            printf("User canceled file selection\n");
+        }
+    }
+}
+
 void work_leif(App *app)
 {
     lf_div_begin(v2s(MARGIN, MARGIN),v2s(app->width - MARGIN * 2.0f, app->height - MARGIN * 2.0f), 1);
@@ -112,9 +158,11 @@ void work_leif(App *app)
     render_menu(app);
     lf_next_line();
     render_settings(app);
-
     encoderSelector(app);
     lf_next_line();
     cfrSelector(app);
+    lf_next_line();
+    speedSelector(app);
+    render_file_selc(app);
     lf_div_end();
 }

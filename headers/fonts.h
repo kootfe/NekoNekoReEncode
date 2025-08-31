@@ -3,7 +3,8 @@
 
 #include <leif/leif.h>
 typedef enum FontList {
-    JET_BOLD, JET_MONO
+    JET_BOLD, JET_MONO,
+    SPACE_MONO
 } FontList;
 
 char *dftt(FontList font);

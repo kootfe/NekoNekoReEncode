@@ -1,5 +1,4 @@
 #include <leif/leif.h>
-#include <stdio.h>
 #include "headers/theme.h"
 #include "headers/fonts.h"
 
@@ -54,6 +53,6 @@ void init_theme()
     cfrButton.text_color = LF_WHITE;
 
     init_font(&titlefont, JET_BOLD, 30);
-    init_font(&btnfont, JET_MONO, 20);
+    init_font(&btnfont, SPACE_MONO, 22);
 }
 
