@@ -5,7 +5,8 @@
 App appM = {
     .width = 1280,
     .height = 720,
-    .parset = ANIME
+    .parset = ANIME,
+    .wantfile = 0
 };
 
 RenderSetting rSet;

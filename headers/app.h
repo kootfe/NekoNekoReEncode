@@ -8,6 +8,7 @@ typedef enum Parset {
 typedef struct App {
     int width;
     int height;
+    int wantfile;
     Parset parset;
 } App;
 

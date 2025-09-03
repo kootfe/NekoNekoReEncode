@@ -1,15 +1,19 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include <pthread.h>
 #include <endian.h>
 #include <leif/leif.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <tinyfiledialogs.h>
 
 #include "headers/conf.h"
+#include "headers/filework.h"
 #include "headers/gui.h"
 #include "headers/theme.h"
 #include "headers/fonts.h"
 #include "headers/input.h"
+
 
 void check(void *ptr)
 {
@@ -51,6 +55,12 @@ int main()
 
         glfwPollEvents();
         glfwSwapBuffers(win);
+        if (appM.wantfile) {
+            appM.wantfile = 0;
+            pthread_t tid;
+            pthread_create(&tid, NULL, filedialogth, &appM);
+            pthread_detach(tid);
+        }
     }
 
     freefonts();

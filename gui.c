@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "headers/gui.h"
+#include "headers/cli.h"
 #include "headers/conf.h"
 #include "headers/theme.h"
 #include "headers/app.h"
@@ -21,7 +22,7 @@
 
 void render_btn_clicked(App *app)
 {
-    printf("Encoder(INT): %d\nCFR: %d\nParset(INT)%d\nSpeed(INT): %d\n", rSet.encoder, rSet.cfr, rSet.parset, rSet.speed);
+    executeTheThing();
 }
 
 vec2s v2s(float x, float y)
@@ -92,6 +93,31 @@ void encoderSelector(App *app)
     rSet.encoder = (EncoderE)val;
 }
 
+void render_audio_bitrate_selector(App *app)
+{
+    lf_text("Audio Bitrate");
+    static const char *bitrates[] = { "65kbps", "96kbps", "128kbps", "160kbps", "192kbps", "256kbps" };
+    static bool open = false;
+    static int val = 2; //def 128
+    lf_push_style_props(dropdownStyle);
+    lf_dropdown_menu(bitrates, "Bitrate", 6, 215, 180, &val, &open);
+    lf_pop_style_props();
+    rSet.audiobitrate = (AudoBitE)val;
+}
+
+void render_video_bitrate_sel(App *app)
+{
+    lf_text("Video Bitrate");
+    static const char *bitrates[] = { "4MBPS", "8Mpbs", "12MPBS", "16Mpbs", "20Mpbs", "24Mpbs" };
+    static bool open = false;
+    static int val = 2; //def 8
+    lf_push_style_props(dropdownStyle);
+    lf_dropdown_menu(bitrates, "Bitrate", 6, 215, 180, &val, &open);
+    lf_pop_style_props();
+    rSet.videorate = (VideRate)val;
+}
+
+
 void cfrSelector(App *app)
 {
     static int val = 0;
@@ -108,6 +134,7 @@ void cfrSelector(App *app)
 
 void speedSelector(App *app)
 {
+    lf_text("Speed: ");
     static int val = 0;
     static const char *speed[] = {
         "Very Fast", "Faster", "Fast",
@@ -125,30 +152,11 @@ void speedSelector(App *app)
 void render_file_selc(App *app)
 {
     lf_input_text(&pathInput);
-    const char *filters[2] = { "*.mp4", "*.mkv" };
-    
     if (lf_button("Pick") == LF_CLICKED) {
-        const char *default_dir = "/"; // Linux default
-#if defined(_WIN32) || defined(_WIN64)
-        default_dir = "C:\\";        // Windows default
-#endif
-
-        const char *path = tinyfd_openFileDialog(
-            "Select file", 
-            default_dir, 
-            2, 
-            filters, 
-            NULL, 
-            0
-        );
-
-        if (path) { 
-            snprintf(pathBuf, sizeof(pathBuf), "%s", path);
-        } else {
-            printf("User canceled file selection\n");
-        }
+        app->wantfile = 1;
     }
 }
+
 
 void work_leif(App *app)
 {
@@ -157,12 +165,14 @@ void work_leif(App *app)
     lf_next_line();
     render_menu(app);
     lf_next_line();
-    render_settings(app);
+    render_file_selc(app);
+    lf_next_line();
     encoderSelector(app);
+    render_video_bitrate_sel(app);
+    lf_next_line();
+    render_audio_bitrate_selector(app);
     lf_next_line();
     cfrSelector(app);
-    lf_next_line();
     speedSelector(app);
-    render_file_selc(app);
     lf_div_end();
 }
